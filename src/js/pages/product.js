@@ -4,7 +4,7 @@ import '../cart/toggleCart.js';
 import '../cart/setupCart.js';
 // specific
 import { addToCart } from '../cart/setupCart.js';
-import { singleProductUrl, getElement, formatPrice } from '../utils.js';
+import { SINGLE_PRODUCT_API_URL, getElement, formatPrice } from '../utils.js';
 
 // selections
 // const loading = getElement('.page-loading');

@@ -1,0 +1,141 @@
+@media screen and (min-width: 800px) {
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    h3 {
+        font-size: 1.75rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+    }
+
+    body {
+        font-size: 1rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        line-height: 1;
+    }
+
+    .nav-center {
+        position: relative;
+    }
+
+    .nav-logo {
+        position: absolute;
+        top: 50%;
+        left: 65%;
+        transform: translate(-50%, -50%);
+    }
+
+    .toggle-nav {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        font-size: 1.5rem;
+        text-transform: capitalize;
+    }
+
+    .nav-link {
+        color: var(--clr-white);
+        margin-right: 3rem;
+        letter-spacing: var(--spacing);
+        transition: var(--transition);
+        font-size: 1.25rem;
+    }
+
+    .nav-link:hover {
+        color: var(--clr-primary-5);
+    }
+
+    .sidebar-overlay {
+        display: none;
+    }
+
+    .hero h3 {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .nav-logo {
+        left: 50%;
+    }
+
+    .hero h1 {
+        font-size: 4.4rem;
+        letter-spacing: 5px;
+    }
+
+    .hero h3 {
+        font-size: 2.75rem;
+        margin: 1.5rem 0;
+    }
+
+    .featured-center {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .single-product-center {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .products-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .products-container .product-img {
+        height: 10rem;
+    }
+
+    .products-container .product-name {
+        font-size: 0.85rem;
+    }
+
+    .products-container .product-price {
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .products {
+        grid-template-columns: 200px 1fr;
+    }
+
+    .categories {
+        position: sticky;
+        top: 1rem;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .featured-center {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .product .img {
+        height: 13rem;
+    }
+}
+
+@media screen and (min-width: 1170px) {
+    .products-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
