@@ -6,6 +6,7 @@ const SINGLE_PRODUCT_API_URL = 'https://www.course-api.com/javascript-store-sing
 const getElement = (selection) => {
   const element = document.querySelector(selection);
   if (element) return element;
+  
   throw new Error(
     `Please check "${selection}" selector, no such element exist`
   );
