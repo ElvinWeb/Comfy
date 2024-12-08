@@ -87,9 +87,6 @@
     transition: var(--transition);
     font-size: 1.25rem;
   }
-  .nav-link:hover {
-    color: var(--clr-primary-5);
-  }
   .sidebar-overlay {
     display: none;
   }
