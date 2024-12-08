@@ -7,5 +7,19 @@ import "./src/js/cart/setupCart.js";
 // specific imports
 import fetchProducts from "./src/js/fetchProducts.js";
 import { setupStore, store } from "./src/js/store.js";
-import display from "./src/js/displayProducts.js";
+import displayProducts from "./src/js/displayProducts.js";
 import { getElement } from "./src/js/utils.js";
+
+const feturedContainer = getElement(".featured-center");
+
+const init = async () => {
+  const products = await fetchProducts();
+  console.log(products);
+  if (products) {
+    setupStore(products);
+    const featured = store.filter((product) => product.featured === true);
+    displayProducts(featured, feturedContainer);
+  }
+};
+
+window.addEventListener("DOMContentLoaded", init);
