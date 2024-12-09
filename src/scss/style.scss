@@ -741,13 +741,14 @@ p {
 .single-product-center {
     margin: 2rem auto;
     display: grid;
-    gap: 1rem 2rem;
+    gap: 2rem 4rem;
 }
 
 .single-product-img {
     height: 25rem;
-    border-radius: var(--radius);
     object-fit: cover;
+    border-radius: var(--radius);
+    box-shadow: var(--light-shadow);
 }
 
 .single-product-company {
@@ -774,6 +775,6 @@ p {
 }
 
 .single-product-desc {
-    max-width: 25em;
+    max-width: 30em;
     line-height: 1.8;
 }

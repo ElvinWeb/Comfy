@@ -11,7 +11,7 @@ import setupPrice from "../filters/price.js";
 
 // specific imports
 import { store } from "../store.js";
-import display from "../displayProducts.js";
+import { displayProducts } from "../displayProducts.js";
 import { getElement } from "../utils.js";
 
 const loading = getElement(".page-loading");
@@ -22,7 +22,7 @@ const init = async () => {
     const products = await fetchProducts();
     setupStore(products);
   }
-  display(store, allProductsContainer);
+  displayProducts(store, allProductsContainer);
 
   loading.style.display = "none";
 };

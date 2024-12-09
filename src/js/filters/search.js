@@ -1,5 +1,5 @@
-import { getElement } from '../utils.js';
-import display from '../displayProducts.js';
+import { getElement } from "../utils.js";
+import { displayProducts } from "../displayProducts.js";
 
 const setupSearch = () => {};
 

@@ -1,7 +1,7 @@
 import { formatPrice } from "./utils.js";
 import { addToCart } from "./cart/setupCart.js";
 
-const displayProducts = (products, element, filters) => {
+export const displayProducts = (products, element, filters) => {
   // display products
   element.innerHTML = products
     .map((product) => {
@@ -36,5 +36,3 @@ const displayProducts = (products, element, filters) => {
     }
   });
 };
-
-export default displayProducts;
