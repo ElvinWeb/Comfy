@@ -6,7 +6,7 @@ const nameInput = getElement(".search-input");
 const allProductsContainer = getElement(".products-container");
 
 const setupSearch = (store) => {
-  const searchProducts = function () {
+  const searchFilter = function () {
     const searchValue = nameInput.value.trim();
 
     if (searchValue) {
@@ -25,7 +25,7 @@ const setupSearch = (store) => {
       displayProducts(store, allProductsContainer, true);
     }
   };
-  form.addEventListener("keyup", searchProducts);
+  form.addEventListener("keyup", searchFilter);
 };
 
 export default setupSearch;

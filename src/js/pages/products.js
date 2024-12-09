@@ -25,6 +25,7 @@ const init = async () => {
   displayProducts(store, allProductsContainer);
 
   setupSearch(store);
+  setupCompanies(store);
 
   loading.style.display = "none";
 };
