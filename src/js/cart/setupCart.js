@@ -9,7 +9,9 @@ import { openCart } from "./toggleCart.js";
 import { findProduct } from "../store.js";
 import addToCartDOM from "./addToCartDOM.js";
 
+const cartItemCountDOM = getElement(".cart-item-count");
 const cartItemsDOM = getElement(".cart-items");
+const cartTotalDOM = getElement(".cart-total");
 let cart = getStorageItem("cart");
 
 export const addToCart = (id) => {
@@ -29,7 +31,41 @@ export const addToCart = (id) => {
     newAmount.textContent = amount;
   }
 
+  // add one to the item count
+  displayCartItemCount();
+  // display cart totals
+  displayCartTotal();
+  // set cart in local storage
   setStorageItem("cart", cart);
-  //more stuff coming up
+  // show the cart sidebar
   openCart();
 };
+
+function displayCartItemCount() {
+  const amount = cart.reduce((total, cartItem) => {
+    return (total += cartItem.amount);
+  }, 0);
+  cartItemCountDOM.textContent = amount;
+}
+function displayCartTotal() {
+  let total = cart.reduce((total, cartItem) => {
+    return (total += cartItem.price * cartItem.amount);
+  }, 0);
+  cartTotalDOM.textContent = `Total : ${formatPrice(total)} `;
+}
+function displayCartItemsDOM() {
+  cart.forEach((cartItem) => {
+    addToCartDOM(cartItem);
+  });
+}
+
+const init = () => {
+  // display amount of cart items
+  displayCartItemCount();
+  // display total
+  displayCartTotal();
+  // add all cart items to the dom
+  displayCartItemsDOM();
+};
+
+window.addEventListener("DOMContentLoaded", init);
