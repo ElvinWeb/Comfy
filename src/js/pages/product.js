@@ -1,6 +1,5 @@
 // global imports
 import "../toggleSidebar.js";
-import "../activeNav.js";
 import "../cart/toggleCart.js";
 import "../cart/setupCart.js";
 // specific
@@ -25,54 +24,73 @@ const query = window.location.search;
 let productID;
 
 // Fetching the product details
-const fetchProductDetails = async function () {
+const fetchProductDetails = async () => {
   try {
     const response = await fetch(`${SINGLE_PRODUCT_API_URL}${query}`);
-    if (response.status >= 200 && response.status <= 299) {
-      const product = await response.json();
-      // grab data
-      const { id, fields } = product;
-      productID = id;
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-      const { name, company, price, colors, description } = fields;
-      const image = fields.image[0].thumbnails.large.url;
+    const { id, fields: { 
+      name, 
+      company, 
+      price, 
+      colors, 
+      description,
+      image: [{ thumbnails: { large: { url: imageUrl }}}]
+    }} = await response.json();
 
-      // set values
-      document.title = `${name.toUpperCase()} | Comfy`;
-      pageTitleDOM.textContent = `Product / ${name}`;
-      imgDOM.src = image;
-      titleDOM.textContent = name;
-      companyDOM.textContent = `by ${company}`;
-      priceDOM.textContent = formatPrice(price);
-      descDOM.textContent = description;
-      colors.forEach((color) => {
-        const span = document.createElement("span");
-        span.classList.add("product-color");
-        span.style.backgroundColor = `${color}`;
-        colorsDOM.appendChild(span);
-      });
-    } else {
-      console.log(response.status, response.statusText);
-      centerDOM.innerHTML = `
+    productID = id;
+
+    // Update DOM elements in batch
+    const updates = [
+      [document.title, `${name.toUpperCase()} | Comfy`],
+      [pageTitleDOM, `Product / ${name}`],
+      [imgDOM.src, imageUrl],
+      [titleDOM, name],
+      [companyDOM, `by ${company}`],
+      [priceDOM, formatPrice(price)],
+      [descDOM, description]
+    ];
+
+    updates.forEach(([element, value]) => {
+      if (element instanceof HTMLElement) {
+        element.textContent = value;
+      } else {
+        element = value;
+      }
+    });
+
+    // Create color spans in one fragment
+    const fragment = document.createDocumentFragment();
+    colors.forEach(color => {
+      const span = document.createElement("span");
+      span.className = "product-color";
+      span.style.backgroundColor = color;
+      fragment.appendChild(span);
+    });
+    colorsDOM.appendChild(fragment);
+
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    centerDOM.innerHTML = `
       <div>
         <h3 class="error">sorry, something went wrong</h3>
         <a href="index.html" class="btn">back home</a>
-      </div> 
-       `;
-    }
-  } catch (error) {
-    console.log(error);
+      </div>`;
   }
 };
 
 // show product when page loads
-window.addEventListener("DOMContentLoaded", async function () {
-  loading.style.display = "flex";
-  await fetchProductDetails();
-  loading.style.display = "none";
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    loading.style.display = "flex";
+    await fetchProductDetails();
+  } finally {
+    loading.style.display = "none";
+  }
 });
 
 // Add cart click handler
-cartBtn.addEventListener("click", function () {
-  addToCart(productID);
-});
+cartBtn.addEventListener("click", () => addToCart(productID));

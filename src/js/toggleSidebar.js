@@ -4,12 +4,10 @@ const toggleNav = getElement(".toggle-nav");
 const sidebarOverlay = getElement(".sidebar-overlay");
 const closeBtn = getElement(".sidebar-close");
 
-toggleNav.addEventListener("click", () => {
-  sidebarOverlay.classList.add("show");
-  document.body.style.overflow = "hidden";
-});
+const toggleSidebar = (show) => {
+  sidebarOverlay.classList[show ? 'add' : 'remove']('show');
+  document.body.style.overflow = show ? 'hidden' : 'visible';
+};
 
-closeBtn.addEventListener("click", () => {
-  sidebarOverlay.classList.remove("show");
-  document.body.style.overflow = "visible";
-});
+toggleNav.addEventListener('click', () => toggleSidebar(true));
+closeBtn.addEventListener('click', () => toggleSidebar(false));

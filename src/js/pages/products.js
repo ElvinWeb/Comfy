@@ -1,6 +1,5 @@
 // global imports
 import "../toggleSidebar.js";
-import "../activeNav.js";
 import "../cart/toggleCart.js";
 import "../cart/setupCart.js";
 
@@ -18,16 +17,21 @@ const loading = getElement(".page-loading");
 const allProductsContainer = getElement(".products-container");
 
 const init = async () => {
+  // Initialize store if empty
   if (store.length < 1) {
     const products = await fetchProducts();
     setupStore(products);
   }
-  displayProducts(store, allProductsContainer);
 
-  setupSearch(store);
-  setupCompanies(store);
-  setupPrice(store);
+  // Initialize all components in parallel
+  await Promise.all([
+    displayProducts(store, allProductsContainer),
+    setupSearch(store),
+    setupCompanies(store), 
+    setupPrice(store)
+  ]);
 
+  // Hide loading indicator
   loading.style.display = "none";
 };
 

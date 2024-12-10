@@ -1,6 +1,5 @@
 // global imports
 import "./src/js/toggleSidebar.js";
-import "./src/js/activeNav.js";
 import "./src/js/cart/toggleCart.js";
 import "./src/js/cart/setupCart.js";
 

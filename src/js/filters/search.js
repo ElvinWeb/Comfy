@@ -6,25 +6,36 @@ const nameInput = getElement(".search-input");
 const allProductsContainer = getElement(".products-container");
 
 const setupSearch = (store) => {
-  const searchFilter = function () {
-    const searchValue = nameInput.value.trim();
+  // Debounce the search to avoid excessive filtering
+  let timeoutId;
+  
+  const searchFilter = () => {
+    clearTimeout(timeoutId);
+    
+    timeoutId = setTimeout(() => {
+      const searchValue = nameInput.value.trim().toLowerCase();
+      
+      // Only filter if there's a search value
+      if (!searchValue) {
+        displayProducts(store, allProductsContainer, true);
+        return;
+      }
 
-    if (searchValue) {
-      const newStore = store.filter((product) => {
-        let { name } = product;
-        if (name.toLowerCase().includes(searchValue.toLowerCase()))
-          return product;
-      });
-      displayProducts(newStore, allProductsContainer, true);
+      // Create case-insensitive regex pattern for more efficient searching
+      const searchPattern = new RegExp(searchValue, 'i');
+      const newStore = store.filter(({ name }) => searchPattern.test(name));
+
+      // Show error or filtered results
       if (newStore.length < 1) {
         allProductsContainer.innerHTML = `<h3 class="filter-error">
              sorry, no products matched your search
              </h3>`;
+      } else {
+        displayProducts(newStore, allProductsContainer, true);
       }
-    } else {
-      displayProducts(store, allProductsContainer, true);
-    }
+    }, 300); // Wait 300ms after last keyup before filtering
   };
+
   form.addEventListener("keyup", searchFilter);
 };
 

@@ -5,27 +5,27 @@ const companiesList = getElement(".companies");
 const allProductsContainer = getElement(".products-container");
 
 const setupCompanies = (store) => {
-  let companies = ["all", ...new Set(store.map((product) => product.company))];
+  // Get unique companies and add 'all' option
+  const companies = ['all', ...new Set(store.map(({ company }) => company))];
 
-  companiesList.innerHTML = companies.map((company) => `<button class="company-btn">${company}</button>`).join("");
+  // Create buttons HTML in one go
+  companiesList.innerHTML = companies
+    .map(company => `<button class="company-btn">${company}</button>`)
+    .join('');
 
-  const companyFilter = function (e) {
-    const element = e.target;
-    if (element.classList.contains("company-btn")) {
-      let newStore = [];
-      if (element.textContent === "all") {
-        newStore = [...store];
-      } else {
-        newStore = store.filter(
-          (product) => product.company === e.target.textContent
-        );
-      }
+  // Optimize company filter handler
+  const companyFilter = ({ target }) => {
+    if (!target.classList.contains('company-btn')) return;
 
-      displayProducts(newStore, allProductsContainer, true);
-    }
+    const selectedCompany = target.textContent;
+    const filteredProducts = selectedCompany === 'all' 
+      ? store
+      : store.filter(product => product.company === selectedCompany);
+
+    displayProducts(filteredProducts, allProductsContainer, true);
   };
 
-  companiesList.addEventListener("click", companyFilter);
+  companiesList.addEventListener('click', companyFilter);
 };
 
 export default setupCompanies;

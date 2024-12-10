@@ -6,23 +6,34 @@ const priceValue = getElement(".price-value");
 const allProductsContainer = getElement(".products-container");
 
 const setupPrice = (store) => {
-  // setup filter
-  let maxPrice = store.map((product) => product.price);
-  maxPrice = Math.max(...maxPrice);
-  maxPrice = Math.ceil(maxPrice / 100);
-  priceInput.value = maxPrice;
-  priceInput.max = maxPrice;
-  priceInput.min = 0;
+  // Calculate max price once
+  const maxPrice = Math.ceil(Math.max(...store.map(product => product.price)) / 100);
+
+  // Initialize price input and display
+  Object.assign(priceInput, {
+    value: maxPrice,
+    max: maxPrice,
+    min: 0
+  });
   priceValue.textContent = `$${maxPrice}`;
 
-  const priceFilter = function () {
-    const value = parseInt(priceInput.value);
-    priceValue.textContent = `$${value}`;
-    let newStore = store.filter((product) => product.price / 100 <= value);
-    displayProducts(newStore, allProductsContainer, true);
-    if (newStore.length < 1) {
-      allProductsContainer.innerHTML = `<h3 class="filter-error">sorry, no products matched your search</h3>`;
-    }
+  // Debounce price filter for better performance
+  let timeoutId;
+  const priceFilter = () => {
+    clearTimeout(timeoutId);
+    
+    timeoutId = setTimeout(() => {
+      const value = parseInt(priceInput.value);
+      priceValue.textContent = `$${value}`;
+
+      const newStore = store.filter(product => product.price / 100 <= value);
+      
+      if (newStore.length) {
+        displayProducts(newStore, allProductsContainer, true);
+      } else {
+        allProductsContainer.innerHTML = `<h3 class="filter-error">sorry, no products matched your search</h3>`;
+      }
+    }, 100);
   };
 
   priceInput.addEventListener("input", priceFilter);
