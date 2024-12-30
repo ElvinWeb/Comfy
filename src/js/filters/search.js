@@ -27,9 +27,7 @@ const setupSearch = (store) => {
 
       // Show error or filtered results
       if (newStore.length < 1) {
-        allProductsContainer.innerHTML = `<h3 class="filter-error">
-             sorry, no products matched your search
-             </h3>`;
+        allProductsContainer.innerHTML = `<h3 class="filter-error"> sorry, no products matched your search </h3>`;
       } else {
         displayProducts(newStore, allProductsContainer, true);
       }

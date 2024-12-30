@@ -1,11 +1,10 @@
-// import
 import {
   getStorageItem,
   setStorageItem,
   formatPrice,
   getElement,
+  showNotification,
 } from "../utils.js";
-import { openCart } from "./toggleCart.js";
 import { findProduct } from "../store.js";
 import addToCartDOM from "./addToCartDOM.js";
 
@@ -25,11 +24,13 @@ export const addToCart = (id) => {
   } else {
     // Update existing item
     const amount = increaseAmount(id);
-    cartItemsDOM.querySelector(`[data-id="${id}"].cart-item-amount`).textContent = amount;
+    cartItemsDOM.querySelector(
+      `[data-id="${id}"].cart-item-amount`
+    ).textContent = amount;
   }
-
+  
+  showNotification("Product added successfully!");
   updateCartState();
-  openCart();
 };
 
 function updateCartState() {
@@ -39,11 +40,17 @@ function updateCartState() {
 }
 
 function displayCartItemCount() {
-  cartItemCountDOM.textContent = cart.reduce((total, { amount }) => total + amount, 0);
+  cartItemCountDOM.textContent = cart.reduce(
+    (total, { amount }) => total + amount,
+    0
+  );
 }
 
 function displayCartTotal() {
-  const total = cart.reduce((sum, { price, amount }) => sum + price * amount, 0);
+  const total = cart.reduce(
+    (sum, { price, amount }) => sum + price * amount,
+    0
+  );
   cartTotalDOM.textContent = `Total : ${formatPrice(total)}`;
 }
 
@@ -59,7 +66,7 @@ function updateAmount(id, operation) {
   let newAmount;
   cart = cart.map((cartItem) => {
     if (cartItem.id === id) {
-      newAmount = cartItem.amount + (operation === 'increase' ? 1 : -1);
+      newAmount = cartItem.amount + (operation === "increase" ? 1 : -1);
       return { ...cartItem, amount: newAmount };
     }
     return cartItem;
@@ -68,11 +75,11 @@ function updateAmount(id, operation) {
 }
 
 function increaseAmount(id) {
-  return updateAmount(id, 'increase');
+  return updateAmount(id, "increase");
 }
 
 function decreaseAmount(id) {
-  return updateAmount(id, 'decrease');
+  return updateAmount(id, "decrease");
 }
 
 function setupCartOperations() {
@@ -83,15 +90,15 @@ function setupCartOperations() {
     const parentID = parent.dataset.id;
 
     const actions = {
-      'cart-item-remove-btn': () => {
+      "cart-item-remove-btn": () => {
         removeItem(id);
         element.parentElement.parentElement.remove();
       },
-      'cart-item-increase-btn': () => {
+      "cart-item-increase-btn": () => {
         const newAmount = increaseAmount(parentID);
         parent.nextElementSibling.textContent = newAmount;
       },
-      'cart-item-decrease-btn': () => {
+      "cart-item-decrease-btn": () => {
         const newAmount = decreaseAmount(parentID);
         if (newAmount === 0) {
           removeItem(parentID);
@@ -99,12 +106,15 @@ function setupCartOperations() {
         } else {
           parent.previousElementSibling.textContent = newAmount;
         }
-      }
+      },
     };
 
     // Execute action if button class matches
     for (const [className, action] of Object.entries(actions)) {
-      if (element.classList.contains(className) || parent.classList.contains(className)) {
+      if (
+        element.classList.contains(className) ||
+        parent.classList.contains(className)
+      ) {
         action();
         break;
       }

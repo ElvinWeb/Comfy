@@ -1,6 +1,5 @@
 // global imports
-import "../toggleSidebar.js";
-import "../cart/toggleCart.js";
+import "../toggleOverlay.js";
 import "../cart/setupCart.js";
 
 //  filter imports
@@ -11,7 +10,7 @@ import setupPrice from "../filters/price.js";
 // specific imports
 import { store } from "../store.js";
 import { displayProducts } from "../displayProducts.js";
-import { getElement } from "../utils.js";
+import { getElement, fetchProducts } from "../utils.js";
 
 const loading = getElement(".page-loading");
 const allProductsContainer = getElement(".products-container");
@@ -27,8 +26,8 @@ const init = async () => {
   await Promise.all([
     displayProducts(store, allProductsContainer),
     setupSearch(store),
-    setupCompanies(store), 
-    setupPrice(store)
+    setupCompanies(store),
+    setupPrice(store),
   ]);
 
   // Hide loading indicator

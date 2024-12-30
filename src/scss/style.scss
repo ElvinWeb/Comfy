@@ -36,6 +36,7 @@
     --clr-black: #222;
 
     --transition: all 0.3s linear;
+    --transition-timing-function: 3s cubic-bezier(0.2, 0, 0, 1) forwards;
     --font: "Roboto", sans-serif;
     --spacing: 0.1rem;
     --radius: 0.25rem;
@@ -778,4 +779,52 @@ p {
 .single-product-desc {
     max-width: 30em;
     line-height: 1.8;
+}
+
+/*--------  Snackbar --------*/
+.snackbar-container {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    display: grid;
+    gap: 8px;
+    z-index: 10;
+}
+
+.snackbar {
+    height: 50px;
+    width: 300px;
+    background-color: var(--clr-grey-10);
+    border: 1px solid var(--clr-grey-8);
+    padding: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: var(--light-shadow);
+    animation: snackbar var(--transition-timing-function);
+}
+
+.snackbar .snackbar-message {
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--clr-grey-1);
+    margin-bottom: 0px;
+}
+
+@keyframes snackbar {
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+
+    10%,
+    95% {
+        height: 48px;
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }

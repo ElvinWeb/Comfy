@@ -1,11 +1,10 @@
 // global imports
-import "../toggleSidebar.js";
-import "../cart/toggleCart.js";
+import "../toggleOverlay.js";
 import "../cart/setupCart.js";
 // specific
 import { SINGLE_PRODUCT_API_URL } from "../config.js";
 import { addToCart } from "../cart/setupCart.js";
-import { getElement, formatPrice } from "../utils.js";
+import { getElement, formatPrice, showNotification } from "../utils.js";
 
 // selections
 const loading = getElement(".page-loading");
@@ -27,19 +26,28 @@ let productID;
 const fetchProductDetails = async () => {
   try {
     const response = await fetch(`${SINGLE_PRODUCT_API_URL}${query}`);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const { id, fields: { 
-      name, 
-      company, 
-      price, 
-      colors, 
-      description,
-      image: [{ thumbnails: { large: { url: imageUrl }}}]
-    }} = await response.json();
+    const {
+      id,
+      fields: {
+        name,
+        company,
+        price,
+        colors,
+        description,
+        image: [
+          {
+            thumbnails: {
+              large: { url: imageUrl },
+            },
+          },
+        ],
+      },
+    } = await response.json();
 
     productID = id;
 
@@ -51,7 +59,7 @@ const fetchProductDetails = async () => {
       [titleDOM, name],
       [companyDOM, `by ${company}`],
       [priceDOM, formatPrice(price)],
-      [descDOM, description]
+      [descDOM, description],
     ];
 
     updates.forEach(([element, value]) => {
@@ -64,20 +72,19 @@ const fetchProductDetails = async () => {
 
     // Create color spans in one fragment
     const fragment = document.createDocumentFragment();
-    colors.forEach(color => {
+    colors.forEach((color) => {
       const span = document.createElement("span");
       span.className = "product-color";
       span.style.backgroundColor = color;
       fragment.appendChild(span);
     });
     colorsDOM.appendChild(fragment);
-
   } catch (error) {
-    console.error('Error fetching product:', error);
+    showNotification(error.message);
     centerDOM.innerHTML = `
       <div>
         <h3 class="error">sorry, something went wrong</h3>
-        <a href="index.html" class="btn">back home</a>
+        <a href="/index.html" class="btn">Back home</a>
       </div>`;
   }
 };
